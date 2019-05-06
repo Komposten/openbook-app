@@ -194,6 +194,8 @@ class OBIcons {
   static const unfavoriteCommunity =
       OBIconData(nativeIcon: Icons.remove_circle);
   static const expand = OBIconData(filename: 'expand-icon.png');
+  static const expand_less = OBIconData(nativeIcon: Icons.expand_less);
+  static const expand_more = OBIconData(nativeIcon: Icons.expand_more);
   static const mutePost = OBIconData(nativeIcon: Icons.notifications_active);
   static const editPost = OBIconData(nativeIcon: Icons.edit);
   static const unmutePost = OBIconData(nativeIcon: Icons.notifications_off);
