@@ -129,7 +129,12 @@ class OBNotificationsPageState extends State<OBNotificationsPage>
     var widgets = <Widget>[];
 
     if (_showFilters) {
-      widgets.add(OBNotificationFilter(_filter, _filtersUpdated));
+      widgets.add(
+        Padding(
+          padding: EdgeInsets.only(bottom: 15),
+          child: OBNotificationFilter(_filter, _filtersUpdated),
+        ),
+      );
     }
 
     widgets.add(
@@ -179,8 +184,6 @@ class OBNotificationsPageState extends State<OBNotificationsPage>
 
   Future<List<OBNotification>> _refreshNotifications() async {
     await _readNotifications();
-
-    print("Refresh: ${_filter.getActive()}");
 
     NotificationsList notificationsList =
         await _userService.getNotifications(types: _filter.getActive());
@@ -265,7 +268,7 @@ class OBNotificationsPageState extends State<OBNotificationsPage>
         return _filter.isActive(NotificationType.follow);
       case PushNotificationType.communityInvite:
         return _filter.isActive(NotificationType.communityInvite);
-      default :
+      default:
         print("Unsupported notification type: $type");
         return true;
     }
