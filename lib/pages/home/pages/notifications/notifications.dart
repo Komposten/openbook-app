@@ -198,12 +198,11 @@ class OBNotificationsPageState extends State<OBNotificationsPage>
   }
 
   Future<List<OBNotification>> _loadMoreNotifications(
-      List<OBNotification> currentNotifications,
-      [List<NotificationType> types]) async {
+      List<OBNotification> currentNotifications) async {
     OBNotification lastNotification = currentNotifications.last;
     int lastNotificationId = lastNotification.id;
-    NotificationsList moreNotifications =
-        await _userService.getNotifications(maxId: lastNotificationId, types: types);
+    NotificationsList moreNotifications = await _userService.getNotifications(
+        maxId: lastNotificationId, types: _filter.getActive());
     return moreNotifications.notifications;
   }
 
