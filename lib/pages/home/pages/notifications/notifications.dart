@@ -10,6 +10,7 @@ import 'package:Okuna/services/navigation_service.dart';
 import 'package:Okuna/services/push_notifications/push_notifications.dart';
 import 'package:Okuna/services/toast.dart';
 import 'package:Okuna/services/user.dart';
+import 'package:Okuna/widgets/badges/badge.dart';
 import 'package:Okuna/widgets/http_list.dart';
 import 'package:Okuna/widgets/icon.dart';
 import 'package:Okuna/widgets/icon_button.dart';
@@ -93,6 +94,8 @@ class OBNotificationsPageState extends State<OBNotificationsPage>
       _needsBootstrap = false;
     }
 
+    var filtersCount = (_filter.hasFilter() ? _filter.getActiveCategories().length : 0);
+
     return CupertinoPageScaffold(
       navigationBar: OBThemedNavigationBar(
         title: 'Notifications',
@@ -101,6 +104,12 @@ class OBNotificationsPageState extends State<OBNotificationsPage>
           mainAxisAlignment: MainAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            OBBadge(
+              count: filtersCount,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
             OBIconButton(
               OBIcons.filter,
               themeColor: (_showFilters
@@ -108,7 +117,7 @@ class OBNotificationsPageState extends State<OBNotificationsPage>
                   : OBIconThemeColor.secondaryText),
               onPressed: _toggleNotificationFiltersVisible,
             ),
-            Container(
+            const SizedBox(
               width: 10,
             ),
             OBIconButton(
