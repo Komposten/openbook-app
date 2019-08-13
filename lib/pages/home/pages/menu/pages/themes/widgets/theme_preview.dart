@@ -20,7 +20,7 @@ class OBThemePreview extends StatelessWidget {
         stream: themeService.themeChange,
         initialData: themeService.getActiveTheme(),
         builder: (BuildContext context, AsyncSnapshot<OBTheme> snapshot) {
-          bool isActiveTheme = themeService.isActiveTheme(theme);
+          bool isActiveTheme = themeService.isSelectedTheme(theme);
           Color activeColor = themeValueParserService
               .parseGradient(theme.primaryAccentColor)
               .colors[0];

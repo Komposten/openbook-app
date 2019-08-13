@@ -120,6 +120,8 @@ flutter:
     - assets/images/theme-previews/theme-preview-space-cinnabar.png
     - assets/images/theme-previews/theme-preview-light-royale.png
     - assets/images/theme-previews/theme-preview-space-royale.png
+    - assets/images/theme-previews/theme-preview-light-colorful.png
+    - assets/images/theme-previews/theme-preview-space-colorful.png
     - assets/images/splash-background.png
     - assets/images/openbook-o-logo.png
     - assets/images/pixel-universe.jpg

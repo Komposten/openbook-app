@@ -19,8 +19,12 @@ class ThemeService {
   Random random = new Random();
 
   OBTheme _activeTheme;
+  int _selectedThemeId;
 
   OBStorage _storage;
+
+  static const _spaceRandomId = -2;
+  static const _lightRandomId = -1;
 
   List<OBTheme> _themes = [
     OBTheme(
@@ -154,7 +158,7 @@ class ThemeService {
     OBTheme(
         id: 11,
         name: 'Light Cinnabar',
-        primaryAccentColor: '#A71D31, #F53844',
+        primaryAccentColor: '#9F9F9F, #B0B0B0',
         primaryTextColor: '#505050',
         secondaryTextColor: '#676767',
         primaryColor: '#ffffff',
@@ -177,6 +181,32 @@ class ThemeService {
         dangerColorAccent: '#ffffff',
         themePreview:
             'assets/images/theme-previews/theme-preview-space-cinnabar.png'),
+    OBTheme(
+        id: _lightRandomId,
+        name: 'Light Random Preset',
+        primaryTextColor: '#505050',
+        secondaryTextColor: '#676767',
+        primaryColor: '#ffffff',
+        primaryAccentColor: '#9F9F9F, #B0B0B0',
+        successColor: '#7ED321',
+        successColorAccent: '#ffffff',
+        dangerColor: '#FF3860',
+        dangerColorAccent: '#ffffff',
+        themePreview:
+            'assets/images/theme-previews/theme-preview-light-colorful.png'),
+    OBTheme(
+        id: _spaceRandomId,
+        name: 'Space Random Preset',
+        primaryTextColor: '#ffffff',
+        secondaryTextColor: '#b3b3b3',
+        primaryColor: '#232323',
+        primaryAccentColor: '#9F9F9F, #B0B0B0',
+        successColor: '#7ED321',
+        successColorAccent: '#ffffff',
+        dangerColor: '#FF3860',
+        dangerColorAccent: '#ffffff',
+        themePreview:
+            'assets/images/theme-previews/theme-preview-space-colorful.png'),
   ];
 
   ThemeService() {
@@ -199,6 +229,7 @@ class ThemeService {
 
   void _bootstrap() async {
     int activeThemeId = await _getStoredActiveThemeId();
+
     if (activeThemeId != null) {
       OBTheme activeTheme = await _getThemeWithId(activeThemeId);
       _setActiveTheme(activeTheme);
@@ -206,8 +237,39 @@ class ThemeService {
   }
 
   void _setActiveTheme(OBTheme theme) {
+    _selectedThemeId = theme.id;
+
+    if (theme.id < 0) {
+      theme = _getRandomTheme(theme.id == _spaceRandomId);
+    }
+
     _activeTheme = theme;
     _themeChangeSubject.add(theme);
+  }
+
+  OBTheme _getRandomTheme(bool space) {
+    Random random = new Random();
+    int steps = random.nextInt(_themes.length)+1;
+
+    int index = 0;
+    int counter = 0;
+    OBTheme theme;
+
+    while (counter < steps) {
+      theme = _themes[index % _themes.length];
+      var isSpaceTheme = _isSpaceTheme(theme);
+      if (theme.id >= 0 && ((space && isSpaceTheme) || (!space && !isSpaceTheme))) {
+        counter++;
+      }
+
+      index++;
+    }
+
+    return theme;
+  }
+
+  bool _isSpaceTheme(OBTheme theme) {
+    return int.parse(theme.primaryColor.substring(1), radix: 16) < 0x7f7f7f;
   }
 
   void _storeActiveThemeId(int themeId) {
@@ -231,6 +293,10 @@ class ThemeService {
 
   bool isActiveTheme(OBTheme theme) {
     return theme.id == this.getActiveTheme().id;
+  }
+
+  bool isSelectedTheme(OBTheme theme) {
+    return theme.id == _selectedThemeId;
   }
 
   List<OBTheme> getCuratedThemes() {
