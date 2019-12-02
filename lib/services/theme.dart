@@ -7,8 +7,11 @@ import 'package:Okuna/services/utils_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pigment/pigment.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'dart:math';
+
+import 'handlers/lifecycle.dart';
 
 class ThemeService {
   UtilsService _utilsService;
@@ -213,6 +216,18 @@ class ThemeService {
     _setActiveTheme(_themes[2]);
   }
 
+  void initLifecycleListener() {
+    WidgetsBinding.instance.addObserver(
+      new LifecycleEventHandler(resumeCallback: _onResume)
+    );
+  }
+
+  Future<Null> _onResume() async {
+    if (_selectedThemeId == _spaceRandomId || _selectedThemeId == _lightRandomId) {
+      _setActiveTheme(await _getThemeWithId(_selectedThemeId));
+    }
+  }
+
   void setStorageService(StorageService storageService) {
     _storage = storageService.getSystemPreferencesStorage(namespace: 'theme');
     this._bootstrap();
@@ -239,7 +254,7 @@ class ThemeService {
   void _setActiveTheme(OBTheme theme) {
     _selectedThemeId = theme.id;
 
-    if (theme.id < 0) {
+    if (theme.id == _spaceRandomId || theme.id == _lightRandomId) {
       theme = _getRandomTheme(theme.id == _spaceRandomId);
     }
 

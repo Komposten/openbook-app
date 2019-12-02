@@ -184,6 +184,7 @@ class OpenbookProviderState extends State<OpenbookProvider> {
     validationService.setCommunitiesApiService(communitiesApiService);
     validationService
         .setConnectionsCirclesApiService(connectionsCirclesApiService);
+    themeService.initLifecycleListener();
     themeService.setStorageService(storageService);
     themeService.setUtilsService(utilsService);
     pushNotificationsService.setUserService(userService);
